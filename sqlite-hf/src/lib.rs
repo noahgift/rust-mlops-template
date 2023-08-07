@@ -10,7 +10,9 @@ use std::io::BufReader;
 // create zero shot classification candidates
 fn create_db() -> sqlite::Connection {
     let db = sqlite::open(":memory:").unwrap();
-    db.execute("CREATE TABLE zeroshotcandidates (id INTEGER PRIMARY KEY, label TEXT)")
+    db.execute("CREATE TABLE IF NOT EXISTS zeroshotcandidates (id INTEGER PRIMARY KEY, label TEXT)")
+        .unwrap();
+    db.execute("DELETE FROM zeroshotcandidates")  
         .unwrap();
     db.execute("INSERT INTO zeroshotcandidates (label) VALUES ('rock')")
         .unwrap();
